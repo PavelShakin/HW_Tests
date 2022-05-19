@@ -1,17 +1,23 @@
 package com.example.di_homework
 
-import org.junit.Test
+import com.example.di_homework.data.api.datasource.RemoteUserDataSourceImpl
+import com.example.di_homework.data.repositories.UserRepositoryImpl
+import org.junit.jupiter.api.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Mockito.verify
+import org.mockito.runners.MockitoJUnitRunner
 
-import org.junit.Assert.*
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
+@RunWith(MockitoJUnitRunner::class)
 class ExampleUnitTest {
+
+    @Mock
+    private val service: RemoteUserDataSourceImpl = Mockito.mock(RemoteUserDataSourceImpl::class.java)
+    private val repo = UserRepositoryImpl(service)
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    suspend fun `is on service method call repo method called`() {
+        Mockito.`when`(repo.getUsersList()).thenReturn(verify(service).loadUsersList())
     }
 }
